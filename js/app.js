@@ -1,16 +1,15 @@
 'use strict';
 
-// -------Global Variables-------
+// -------Global Variables-------(const=constant)
 
 const resultsUlElem = document.getElementById('product_clicks');
 const productImageSection = document.getElementById('all_products'); //listener goes on
 const leftImage = document.getElementById('left_image');
 const centerImage = document.getElementById('center_image');
 const rightImage = document.getElementById('right_image');
-const leftProductpElem = document.getElementById('left_text');
-const centerProductpElem = document.getElementById('center_text');
-const rightProductpElem = document.getElementById('right_text');
-
+const leftProductText = document.getElementById('left_text');
+const centerProductText = document.getElementById('center_text');
+const rightProductText = document.getElementById('right_text');
 
 let voteCounter = 0;
 
@@ -18,8 +17,6 @@ let voteCounter = 0;
 let currentLeftProduct = null;
 let currentCenterProduct = null;
 let currentRightProduct = null;
-
-
 
 // constructor function to turn products into objects
 function Product(name, imagePath, timesShown, timesVoted) {
@@ -35,23 +32,18 @@ function Product(name, imagePath, timesShown, timesVoted) {
 // Array of all the Products
 Product.allProducts = [];
 
-//problem 1
-//create function to randomly pick three products from Product.allProducts array
-// Display/render the random products selected
-//increment the timesShown variable in the product object everytime an image is displayed
-//create a listener event to add to the HTML so that clicking the picture does:
-//call function to randomly select 3 new images to display from array
-
-// Display/render the random products selected
-Product.prototype.renderProduct = function(p, imageTag) {
-  imageTag.src = this.imagePath;
-  p.textContent = this.name;
+// Prototype is a function to execute code from objects 
+// Make a prototype to use with the render function below
+Product.prototype.renderProduct = function(productText, productImage) {
+  productImage.src = this.imagePath;
+  productText.textContent = this.name;
 }
 
+// takes 3 products and displays them on html 
 function renderProducts(leftProduct, centerProduct, rightProduct) {
-  leftProduct.renderProduct(leftProductpElem, leftImage);
-  centerProduct.renderProduct(centerProductpElem, centerImage)
-  rightProduct.renderProduct(rightProductpElem, rightImage)
+  leftProduct.renderProduct(leftProductText, leftImage);
+  centerProduct.renderProduct(centerProductText, centerImage)
+  rightProduct.renderProduct(rightProductText, rightImage)
 }
 
 //put results on html, section "product clicks"
@@ -66,10 +58,10 @@ function renderResults() {
   for (let i=0; i < Product.allProducts.length; i++) {
     let currentItem = Product.allProducts[i]
     let liElement = document.createElement('li');
+  //"image name" : "x amount" of votes and timesShown
     liElement.textContent = `${currentItem.name} : amount of votes ${currentItem.timesVoted} Times Shown : ${currentItem.timesShown} `
     resultsUlElem.appendChild(liElement);
   }
-  //"image name" : "x amount" of votes and timesShown
 }
 
 function selectProducts() {     // function to pick three random products from Product.allProducts array
@@ -93,7 +85,7 @@ function selectProducts() {     // function to pick three random products from P
   currentRightProduct.timesShown++;
 }
 
-
+// listener for image clicks
 function productClick(e) {
   let userClick = e.target
   console.log('listening');
@@ -117,33 +109,13 @@ function productClick(e) {
     }
   } else {
     productImageSection.removeEventListener('click', productClick);
-    //TODO create function to render results
     renderResults();
   }
 }
-
+//re-add listener
 productImageSection.addEventListener('click', productClick);
 
-
   
-//(problem 2) increment the timesVoted variable in product object from the listener event created in problem 1
-
-
-//(problem 3) -DONE
-//create a global variable for vote counter 
-
-
-//(problem 4) 
-//When rounds are over, disable listener event (voting)
-//Add a view results button that shows how many times each product was seen AND voted for. 
-
-// this means you need to create a function with a foreach statement that utilizes your allProduct array for its variable sources
-function logAllProducts() {
-  for (let i = 0; i < Product.allProducts.length; i++) {
-    console.log(Product.allProducts[i]);
-    }
-  }
-
 
 new Product('R2D2 Suitcase', './img/bag.jpg');
 new Product('Banana Slicer', './img/banana.jpg');
@@ -167,5 +139,3 @@ new Product('Ergonomic Wine Drinking Apparatus', './img/wine-glass.jpg');
 
 selectProducts();
 renderProducts(currentLeftProduct, currentCenterProduct, currentRightProduct);
-// logAllProducts();
-
