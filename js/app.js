@@ -64,52 +64,121 @@ function renderResults() {
   }
 }
 
-function selectProducts() {     // function to pick three random products from Product.allProducts array
-  let leftProductIndex = Math.floor(Math.random() * Product.allProducts.length);
-  let centerProductIndex;
-  while (centerProductIndex === undefined || centerProductIndex === leftProductIndex) {
-    centerProductIndex = Math.floor(Math.random() * Product.allProducts.length);
+// function to pick three random products from Product.allProducts array
+function selectProducts() {     
+  
+  const doNotUse = [];
+
+  doNotUse.push(currentLeftProduct);
+  doNotUse.push(currentCenterProduct);
+  doNotUse.push(currentRightProduct);
+
+  while(doNotUse.includes(currentLeftProduct)) {
+    let leftProductIndex = Math.floor(Math.random() * Product.allProducts.length);
+    currentLeftProduct = Product.allProducts[leftProductIndex];
   }
-  let rightProductIndex;
-  while (rightProductIndex === undefined || rightProductIndex === leftProductIndex || rightProductIndex === centerProductIndex) {
-    rightProductIndex = Math.floor(Math.random() * Product.allProducts.length);
+  doNotUse.push(currentLeftProduct);
+
+  while(doNotUse.includes(currentCenterProduct)) {
+    let centerProductIndex = Math.floor(Math.random() * Product.allProducts.length);
+    currentCenterProduct = Product.allProducts[centerProductIndex];
   }
 
-  // Update object references selected from from three random products 
-  // increment the timesShown variable in the product object everytime an image is displayed
-  currentLeftProduct = Product.allProducts[leftProductIndex];
-  currentCenterProduct = Product.allProducts[centerProductIndex];
-  currentRightProduct = Product.allProducts[rightProductIndex];
-  currentLeftProduct.timesShown++;  
-  currentCenterProduct.timesShown++;
-  currentRightProduct.timesShown++;
+  doNotUse.push(currentCenterProduct);
+
+  while (doNotUse.includes(currentRightProduct)) {
+    let rightProductIndex = Math.floor(Math.random() * Product.allProducts.length);
+    currentRightProduct = Product.allProducts[rightProductIndex];
+  }
+  doNotUse.push(currentRightProduct);
+
 }
+
+//begin chart
+const displayChart = function() {
+  const resultsChart = document.getElementById('resultsChart').getContext('2d');
+
+  //arrays for data and labels
+  const productData = [];
+  const productLabels = [];
+
+  //go through products
+  for (let product of Product.allProducts) {
+    productData.push(product.timesVoted);
+    productLabels.push(product.timesShown);
+  }
+
+    const myChart = new Chart(resultsChart, {
+      type: 'bar',
+      data: {
+          labels: productLabels,
+          datasets: [{
+              label: '# of Votes',
+              data: productData,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+
+}
+
 
 // listener for image clicks
 function productClick(e) {
   let userClick = e.target
   console.log('listening');
+
   if (voteCounter < 25) {
     if (userClick === leftImage || userClick === centerImage || userClick === rightImage) {
       voteCounter++;
-      
+
       if (userClick === leftImage) {
         currentLeftProduct.timesVoted++;
-      } 
+      }
       else if (userClick === centerImage) {
         currentCenterProduct.votes++;
-      } 
+      }
       else {
         currentRightProduct.votes++
       }
+      currentLeftProduct.timesShown++;
+      currentCenterProduct.timesShown++;
+      currentRightProduct.timesShown++;
+
       selectProducts();
       renderProducts(currentLeftProduct, currentCenterProduct, currentRightProduct);
-    } else {
-    alert(`Click this image to pick a product`);
     }
-  } else {
+    else {
+      alert(`Click this image to pick a product`);
+    }
+  }
+  else {
     productImageSection.removeEventListener('click', productClick);
     renderResults();
+    displayChart();
   }
 }
 //re-add listener
