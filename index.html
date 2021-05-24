@@ -2,45 +2,44 @@
 <head>
   <title>BusMall</title>
   <link rel="stylesheet" href="/css/style.css">
-  <!--<link rel="stylesheet" href="./busMall/css/reset.css">-->
+  <link rel="stylesheet" href="css/module.css">
+  <!-- <link rel="stylesheet" href="css/reset.css"> -->
 </head>
 <body>
-<main>
 <header>
   <h1>BusMall</h1>
   <p>
-    Everything you want, nothing you need
+    Everything you want, nothing you need!
   </p>
 </header>
-<section>
+<main>
+<section id="result">
   <ul id="product_clicks">
     <h2>Results</h2>
   </ul>
 </section>
 <section id="all_products">
-  <h1>Have we got DEALS for you!</h1>
 
   <div id="left_product">
-    <img id="left_image" src="" alt="">
+    <img id="left_image" src="" alt="product">
     <p id="left_text"></p>
   </div>
   
   <div id="center_product">
-    <img id="center_image" src="" alt="">
+    <img id="center_image" src="" alt="product">
     <p id="center_text"></p>
   </div>
   
-  <div id="right-product">
-    <img id="right_image" src="" alt="">
+  <div id="right_product">
+    <img id="right_image" src="" alt="product">
     <p id="right_text"></p>
   </div>
 </section>
-<section>
-  <div>
-    <canvas id="resultsChart"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </div>
-</section>
+<p>Have we got deals for YOU! Click the product image that best suits your needs! </p>
+<div id="chart">
+  <canvas id="resultsChart" width="150" height="150"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
 </main>
 </body>
 <footer>

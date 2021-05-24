@@ -1,0 +1,27 @@
+#left_image {
+  height: 15vw;
+  align-self: center;
+}
+
+#center_image {
+  height: 15vw;
+  align-self: center;
+}
+
+#right_image {
+  height: 15vw;
+  align-self: center;
+}
+
+#left_text, #center_text, #right_text {
+  font-size: 20px;
+  text-align: justify;
+}
+
+footer {  
+  position: fixed;
+  bottom:0;
+  width:100%;
+  height:50px;  
+  background-color:rgb(53, 94, 206);
+}
